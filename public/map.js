@@ -109,7 +109,7 @@ function initMap() {
       console.log("是否為週末:", is_weekend);
       try {
         // 調用後端 API
-        const response = await fetch("http://127.0.0.1:8080/predict", {
+        const response = await fetch("https://flask-api-carpark.azurewebsites.net:8080/predict", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(features),
