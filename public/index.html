@@ -1,145 +1,99 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>停車場地圖</title>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_a3EN-TaSEH-97bpE5WXZ4PGrb1Mxb9E&callback=console.debug&libraries=maps,marker"
-      async
-      defer
-    ></script>
+    <title>首頁</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- 如果有額外的CSS樣式，請建立styles.css並連結 -->
+    <style>
+      body {
+        font-family: "Microsoft JhengHei", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+      }
+      header {
+        background-color: #0078d7;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      main {
+        padding: 20px;
+        text-align: center;
+      }
+      section {
+        margin: 20px auto;
+        max-width: 800px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      section h2 {
+        background-color: #0078d7;
+        color: white;
+        margin: 0;
+        padding: 15px;
+      }
+      section p {
+        padding: 15px;
+      }
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-top: 20px;
+      }
+      .btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #0078d7;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .btn:hover {
+        background-color: #005bb5;
+      }
+    </style>
   </head>
   <body>
-    <div id="title">
-      <h1>🚗 停車場地圖</h1>
-    </div>
+    <header>
+      <h1>台南市停車場剩餘車位查詢預估系統</h1>
+      <p>即時掌握台南市各停車場剩餘車位資訊</p>
+    </header>
+
     <main>
-      <!-- 資料類型選擇 -->
-      <nav id="dataTypeSelector">
-        <label>
-          <input
-            type="radio"
-            name="dataType"
-            id="showParking"
-            value="parking"
-            checked
-          />
-          停車場
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="dataType"
-            id="showDisabledParking"
-            value="disabledParking"
-          />
-          身心障礙停車位
-        </label>
-      </nav>
-
-      <!-- 圖例說明 -->
-      <aside id="legend">
-        <h3>圖例說明</h3>
-        <div>
-          <img src="greencar.png" class="legend-icon" alt="剩餘車位多" />
-          剩餘車位多(10以上)
-        </div>
-        <div>
-          <img src="orangecar.png" class="legend-icon" alt="即將滿位" />
-          即將滿位(1~9)
-        </div>
-        <div>
-          <img src="redcar.png" class="legend-icon" alt="已滿位" />
-          已滿位
-        </div>
-        <div>
-          <img
-            src="https://maps.google.com/mapfiles/kml/shapes/parking_lot.png"
-            class="legend-icon"
-            alt="無即時停車位資訊"
-          />
-          無即時停車位資訊
-        </div>
-      </aside>
-
-      <!-- 地圖 -->
-      <section id="mapContainer">
-        <div id="map">
-          <gmp-map
-            center="22.997325897216797,120.21195220947266"
-            zoom="14"
-            map-id="DEMO_MAP_ID"
-          >
-            <gmp-advanced-marker
-              position="22.997325897216797,120.21195220947266"
-              title="My location"
-            ></gmp-advanced-marker>
-          </gmp-map>
-        </div>
-        <div id="updateNotification" class="notification hidden">
-          資料已更新！
-        </div>
+      <section>
+        <h2>關於本系統</h2>
+        <p>
+          本系統提供台南市停車場即時剩餘車位查詢，資料來源為 TDX
+          運輸資料流通服務。
+          使用者可方便地查看各停車場即時剩餘車位數量，並支援預測未來特定時間車位使用情況。
+        </p>
       </section>
 
-      <!-- 表單區域 -->
-      <form id="predict-form">
-        <div>
-          <label for="car-park-name">停車場名稱：</label>
-          <input
-            type="text"
-            id="car-park-name"
-            name="car_park_name"
-            required
-            readonly
-            placeholder="點擊地圖上的停車場以選擇"
-          />
-          <!-- 隱藏的停車場 ID 欄位 -->
-          <input type="hidden" id="car-park-id" name="car_park_id" />
-        </div>
-        <div style="display: flex; align-items: center">
-          <label for="time" style="margin-right: 10px">時間：</label>
-          <input
-            type="time"
-            id="time"
-            name="time"
-            min="06:00"
-            max="23:59"
-            required
-            placeholder="09:30"
-            style="width: 150px"
-          />
-          <!-- 加入時間調整按鈕 -->
-          <div id="time-buttons">
-            <button type="button" onclick="adjustTime(10)">+10 分</button>
-            <button type="button" onclick="adjustTime(30)">+30 分</button>
-            <button type="button" onclick="adjustTime(60)">+1 小時</button>
-          </div>
-        </div>
+      <section>
+        <h2>功能介紹</h2>
+        <p>
+          - 即時更新：每3分鐘自動更新剩餘車位資訊<br />
+          - 預測分析：支援未來車位需求的預測功能<br />
+          - 用戶友好：直觀的地圖顯示與導航功能
+        </p>
+      </section>
 
-        <div>
-          <label for="weekday">星期：</label>
-          <select id="weekday" name="weekday" required>
-            <option value="" disabled>選擇星期：</option>
-            <option value="0">週一</option>
-            <option value="1">週二</option>
-            <option value="2">週三</option>
-            <option value="3">週四</option>
-            <option value="4">週五</option>
-            <option value="5">週六</option>
-            <option value="6">週日</option>
-          </select>
-        </div>
-        <input type="hidden" id="is_weekend" name="is_weekend" />
-        <button type="submit">預測停車位</button>
-      </form>
-      <!-- 顯示預測結果 -->
-      <div id="prediction-result"></div>
+      <a class="btn" href="map.html">進入地圖查詢</a>
     </main>
+
     <footer>
-      <p>© 2024 停車地圖系統.</p>
+      <p>© 2024 台南市停車場查詢系統 | 資料來源： TDX 運輸資料流通服務</p>
     </footer>
-    <script src="map.js"></script>
   </body>
 </html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>停車場地圖</title>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_a3EN-TaSEH-97bpE5WXZ4PGrb1Mxb9E&callback=console.debug&libraries=maps,marker"
+      async
+      defer
+    ></script>
+  </head>
+  <body>
+    <div id="title">
+      <h1>🚗 停車場地圖</h1>
+    </div>
+    <main>
+      <!-- 資料類型選擇 -->
+      <nav id="dataTypeSelector">
+        <label>
+          <input
+            type="radio"
+            name="dataType"
+            id="showParking"
+            value="parking"
+            checked
+          />
+          停車場
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="dataType"
+            id="showDisabledParking"
+            value="disabledParking"
+          />
+          身心障礙停車位
+        </label>
+      </nav>
+
+      <!-- 圖例說明 -->
+      <aside id="legend">
+        <h3>圖例說明</h3>
+        <div>
+          <img src="greencar.png" class="legend-icon" alt="剩餘車位多" />
+          剩餘車位多(10以上)
+        </div>
+        <div>
+          <img src="orangecar.png" class="legend-icon" alt="即將滿位" />
+          即將滿位(1~9)
+        </div>
+        <div>
+          <img src="redcar.png" class="legend-icon" alt="已滿位" />
+          已滿位
+        </div>
+        <div>
+          <img
+            src="https://maps.google.com/mapfiles/kml/shapes/parking_lot.png"
+            class="legend-icon"
+            alt="無即時停車位資訊"
+          />
+          無即時停車位資訊
+        </div>
+      </aside>
+
+      <!-- 地圖 -->
+      <section id="mapContainer">
+        <div id="map">
+          <gmp-map
+            center="22.997325897216797,120.21195220947266"
+            zoom="14"
+            map-id="DEMO_MAP_ID"
+          >
+            <gmp-advanced-marker
+              position="22.997325897216797,120.21195220947266"
+              title="My location"
+            ></gmp-advanced-marker>
+          </gmp-map>
+        </div>
+        <div id="updateNotification" class="notification hidden">
+          資料已更新！
+        </div>
+      </section>
+
+      <!-- 表單區域 -->
+      <form id="predict-form">
+        <div>
+          <label for="car-park-name">停車場名稱：</label>
+          <input
+            type="text"
+            id="car-park-name"
+            name="car_park_name"
+            required
+            readonly
+            placeholder="點擊地圖上的停車場以選擇"
+          />
+          <!-- 隱藏的停車場 ID 欄位 -->
+          <input type="hidden" id="car-park-id" name="car_park_id" />
+        </div>
+        <div style="display: flex; align-items: center">
+          <label for="time" style="margin-right: 10px">時間：</label>
+          <input
+            type="time"
+            id="time"
+            name="time"
+            min="06:00"
+            max="23:59"
+            required
+            placeholder="09:30"
+            style="width: 150px"
+          />
+          <!-- 加入時間調整按鈕 -->
+          <div id="time-buttons">
+            <button type="button" onclick="adjustTime(10)">+10 分</button>
+            <button type="button" onclick="adjustTime(30)">+30 分</button>
+            <button type="button" onclick="adjustTime(60)">+1 小時</button>
+          </div>
+        </div>
+
+        <div>
+          <label for="weekday">星期：</label>
+          <select id="weekday" name="weekday" required>
+            <option value="" disabled>選擇星期：</option>
+            <option value="0">週一</option>
+            <option value="1">週二</option>
+            <option value="2">週三</option>
+            <option value="3">週四</option>
+            <option value="4">週五</option>
+            <option value="5">週六</option>
+            <option value="6">週日</option>
+          </select>
+        </div>
+        <input type="hidden" id="is_weekend" name="is_weekend" />
+        <button type="submit">預測停車位</button>
+      </form>
+      <!-- 顯示預測結果 -->
+      <div id="prediction-result"></div>
+    </main>
+    <footer>
+      <p>© 2024 停車地圖系統.</p>
+    </footer>
+    <script src="map.js"></script>
+  </body>
+</html>
